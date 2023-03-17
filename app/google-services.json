@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "524963482315",
+    "firebase_url": "https://fan-club-app-9ebd8-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "fan-club-app-9ebd8",
+    "storage_bucket": "fan-club-app-9ebd8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524963482315:android:6802385cd07a8e00b3e94e",
+        "android_client_info": {
+          "package_name": "com.ejqe.fan_club_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "524963482315-psilgundaltilqff6iqafdiu37if1ukb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAMVKUWkQztHVFlx1pZ4ZJXiuRIUzBXNs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "524963482315-psilgundaltilqff6iqafdiu37if1ukb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
