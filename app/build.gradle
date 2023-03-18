@@ -55,5 +55,6 @@ dependencies {
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.15.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.15.0'
-
+    //Bottom nav bar
+    implementation 'com.github.ismaeldivita:chip-navigation-bar:1.4.0'
 }

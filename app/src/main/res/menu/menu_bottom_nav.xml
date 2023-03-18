@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    app:cnb_unselectedColor="#666666">
 
     <item
         android:id="@+id/homeFragment"
         android:title="Home"
-        android:icon="@drawable/icon_home"/>
+        android:icon="@drawable/icon_home"
+        app:cnb_iconColor="@color/home"/>
 
     <item
         android:id="@+id/memberListFragment"
         android:title="Members"
-        android:icon="@drawable/icon_list"/>
+        android:icon="@drawable/icon_list"
+        app:cnb_iconColor="@color/members"/>
 
     <item
         android:id="@+id/musicFragment"
         android:title="Music"
-        android:icon="@drawable/icon_music"/>
+        android:icon="@drawable/icon_music"
+        app:cnb_iconColor="@color/music"/>
 
     <item
         android:id="@+id/profileFragment"
         android:title="Profile"
-        android:icon="@drawable/icon_account"/>
+        android:icon="@drawable/icon_account"
+        app:cnb_iconColor="@color/profile"/>
 
 </menu>
