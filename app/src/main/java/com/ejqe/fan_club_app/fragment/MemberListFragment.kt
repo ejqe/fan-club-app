@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ejqe.fan_club_app.adapter.MemberListAdapter
@@ -32,20 +33,25 @@ class MemberListFragment : Fragment() {
             _binding = FragmentMemberListBinding.inflate(inflater, container, false)
             val view = binding.root
 
+            //Setting the Toolbar
+            val toolbar = binding.toolbar
+            toolbar.title = "MEMBERS"
+            (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
 
+            //Recycler View
             userRecyclerview = binding.rvMemberList
             val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(requireContext(), 2)
             binding.rvMemberList.layoutManager = layoutManager
-
             binding.rvMemberList.setHasFixedSize(true)
-
             memberList = arrayListOf()
 
+            //Firebase
             getUserData()
             return view
 
         }
 
+        //Get Firebase Data
         private fun getUserData() {
 
             databaseReference = FirebaseDatabase

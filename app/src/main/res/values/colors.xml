@@ -12,5 +12,6 @@
     <color name="members">#673AB7</color>
     <color name="music">#E91E63</color>
     <color name="profile">#4CAF50</color>
+    <color name="white_bg">#F5F8FD</color>
 
 </resources>
