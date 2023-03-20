@@ -40,7 +40,7 @@ class MemberListFragment : Fragment() {
 
             //Recycler View
             userRecyclerview = binding.rvMemberList
-            val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(requireContext(), 2)
+            val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(requireContext(), 3)
             binding.rvMemberList.layoutManager = layoutManager
             binding.rvMemberList.setHasFixedSize(true)
             memberList = arrayListOf()
