@@ -50,11 +50,9 @@ class MemberListFragment : Fragment() {
         //Refresh Down
         refreshList()
 
-
         return view
-
-
     }
+
 
     private fun refreshList() {
         binding.swipeToRefresh.setOnRefreshListener {
@@ -78,7 +76,7 @@ class MemberListFragment : Fragment() {
                         memberList.add(member!!)
                     }
                     userRecyclerview.adapter =
-                        MemberListAdapter(memberList, this@MemberListFragment)
+                        MemberListAdapter(this@MemberListFragment, memberList)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -87,10 +85,6 @@ class MemberListFragment : Fragment() {
             })
     }
 
-
-    private fun onRvListItemClick(position: Int) {
-        Toast.makeText(context, "Item $position clicked", Toast.LENGTH_SHORT) .show()
-    }
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

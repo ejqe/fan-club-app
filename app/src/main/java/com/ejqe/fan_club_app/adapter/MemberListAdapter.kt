@@ -10,12 +10,11 @@ import com.bumptech.glide.Glide
 import com.ejqe.fan_club_app.databinding.SingleMemberBinding
 import com.ejqe.fan_club_app.fragment.MemberListFragment
 import com.ejqe.fan_club_app.model.MembersModel
-import kotlinx.coroutines.newFixedThreadPoolContext
 
 
 class MemberListAdapter(
-    private var memberList: ArrayList<MembersModel>,
-    private val context: MemberListFragment,
+    private var context: MemberListFragment,
+    private var memberList: ArrayList<MembersModel>
 ) : RecyclerView.Adapter<MemberListAdapter.ViewHolder>() {
 
 
@@ -28,7 +27,6 @@ class MemberListAdapter(
             }
         }
     }
-
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -45,12 +43,10 @@ class MemberListAdapter(
         val currentItem = memberList[position]
         Glide.with(context).load(currentItem.imageUrl).into(holder.itemBinding.memberImage)
         holder.itemBinding.memberName.text = "MNL48 " + currentItem._name?.uppercase()
+
+
     }
-
-
     override fun getItemCount(): Int = memberList.size
-
-
 
 }
 
