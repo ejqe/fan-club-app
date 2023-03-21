@@ -4,24 +4,31 @@ package com.ejqe.fan_club_app.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ejqe.fan_club_app.databinding.SingleMemberBinding
 import com.ejqe.fan_club_app.fragment.MemberListFragment
 import com.ejqe.fan_club_app.model.MembersModel
+import kotlinx.coroutines.newFixedThreadPoolContext
 
 
 class MemberListAdapter(
     private var memberList: ArrayList<MembersModel>,
-    private val context: MemberListFragment
+    private val context: MemberListFragment,
 ) : RecyclerView.Adapter<MemberListAdapter.ViewHolder>() {
 
 
+    class ViewHolder(val itemBinding: SingleMemberBinding) : RecyclerView.ViewHolder(itemBinding.root) {
 
-    inner class ViewHolder(
+        init {
+            itemBinding.memberImage.setOnClickListener {
+                val position: Int = absoluteAdapterPosition
+                Toast.makeText(itemBinding.root.context, "Item No. ${position + 1}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
-        val itemBinding: SingleMemberBinding
-    ) : RecyclerView.ViewHolder(itemBinding.root)
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,7 +36,6 @@ class MemberListAdapter(
             LayoutInflater.from(parent.context),
             parent, false
         )
-
 
         return ViewHolder(itemBinding)
     }
@@ -43,6 +49,8 @@ class MemberListAdapter(
 
 
     override fun getItemCount(): Int = memberList.size
+
+
 
 }
 

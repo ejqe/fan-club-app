@@ -20,7 +20,8 @@
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        app:cnb_menuResource="@menu/menu_bottom_nav"/>
+        app:cnb_menuResource="@menu/menu_bottom_nav"
+        app:cnb_animationDuration="200"/>
 
 
 

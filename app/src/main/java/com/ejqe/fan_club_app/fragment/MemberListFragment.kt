@@ -17,63 +17,82 @@ import com.google.firebase.database.*
 
 class MemberListFragment : Fragment() {
 
-        private var _binding: FragmentMemberListBinding? = null
-        private val binding get() = _binding!!
+    private var _binding: FragmentMemberListBinding? = null
+    private val binding get() = _binding!!
 
-        private lateinit var databaseReference: DatabaseReference
-        private lateinit var userRecyclerview: RecyclerView
-        private lateinit var memberList: ArrayList<MembersModel>
+    private lateinit var databaseReference: DatabaseReference
+    private lateinit var userRecyclerview: RecyclerView
+    private lateinit var memberList: ArrayList<MembersModel>
 
 
-        override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
-            _binding = FragmentMemberListBinding.inflate(inflater, container, false)
-            val view = binding.root
+        _binding = FragmentMemberListBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-            //Setting the Toolbar
-            val toolbar = binding.toolbar
-            toolbar.title = "MEMBERS"
-            (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+        //Setting the Toolbar
+        val toolbar = binding.toolbar
+        toolbar.title = "MEMBERS"
+        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
 
-            //Recycler View
-            userRecyclerview = binding.rvMemberList
-            val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(requireContext(), 3)
-            binding.rvMemberList.layoutManager = layoutManager
-            binding.rvMemberList.setHasFixedSize(true)
-            memberList = arrayListOf()
+        //Recycler View
+        userRecyclerview = binding.rvMemberList
+        val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(requireContext(), 3)
+        binding.rvMemberList.layoutManager = layoutManager
+        binding.rvMemberList.setHasFixedSize(true)
+        memberList = arrayListOf()
 
-            //Firebase
+        //Firebase
+        getUserData()
+        //Refresh Down
+        refreshList()
+
+
+        return view
+
+
+    }
+
+    private fun refreshList() {
+        binding.swipeToRefresh.setOnRefreshListener {
+            memberList.clear()
             getUserData()
-            return view
-
+            binding.swipeToRefresh.isRefreshing = false
         }
+    }
 
-        //Get Firebase Data
-        private fun getUserData() {
+    //Get Firebase Data
+    private fun getUserData() {
 
-            databaseReference = FirebaseDatabase
-                .getInstance()
-                .getReference("Members")
-            databaseReference.addValueEventListener(
-                object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        for (userSnapshot in snapshot.children) {
-                            val member = userSnapshot.getValue(MembersModel::class.java)
-                            memberList.add(member!!)
-                        }
-                        userRecyclerview.adapter = MemberListAdapter(memberList, this@MemberListFragment)
+        databaseReference = FirebaseDatabase
+            .getInstance()
+            .getReference("Members")
+        databaseReference.addValueEventListener(
+            object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (userSnapshot in snapshot.children) {
+                        val member = userSnapshot.getValue(MembersModel::class.java)
+                        memberList.add(member!!)
                     }
-                    override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
-                    }
-                })
-        }
+                    userRecyclerview.adapter =
+                        MemberListAdapter(memberList, this@MemberListFragment)
+                }
 
-        override fun onDestroy() {
-            super.onDestroy()
-            _binding = null
-        }
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+
+    private fun onRvListItemClick(position: Int) {
+        Toast.makeText(context, "Item $position clicked", Toast.LENGTH_SHORT) .show()
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

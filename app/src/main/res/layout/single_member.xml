@@ -15,11 +15,7 @@
     tools:srcCompat="@tools:sample/avatars"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:shapeAppearanceOverlay="@style/Rounded_Corners"
-    android:outlineSpotShadowColor="@color/black"
-    android:padding="5dp"
-    app:strokeWidth="3dp"
-    app:strokeColor="@color/design_default_color_primary"/>
+    app:shapeAppearanceOverlay="@style/Rounded_Corners" />
     
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/member_name"
@@ -29,11 +25,11 @@
         app:layout_constraintStart_toStartOf="@id/member_image"
         app:layout_constraintEnd_toEndOf="@id/member_image"
         android:layout_marginTop="10dp"
-        android:paddingLeft="3dp"
-        android:paddingEnd="3dp"
+        android:paddingLeft="4dp"
+        android:paddingEnd="4dp"
         android:background="@drawable/background_shape_accent"
         android:text="MNL48 ABBY"
-        android:textSize="14sp"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:textSize="12sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
