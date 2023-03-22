@@ -21,8 +21,10 @@ class MemberListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var databaseReference: DatabaseReference
-    private lateinit var userRecyclerview: RecyclerView
     private lateinit var memberList: ArrayList<MembersModel>
+
+    private lateinit var userRecyclerview: RecyclerView
+    private lateinit var mRecyclerViewAdapter: MemberListAdapter
 
 
     override fun onCreateView(
@@ -75,14 +77,20 @@ class MemberListFragment : Fragment() {
                         val member = userSnapshot.getValue(MembersModel::class.java)
                         memberList.add(member!!)
                     }
-                    userRecyclerview.adapter =
-                        MemberListAdapter(this@MemberListFragment, memberList)
+                    mRecyclerViewAdapter = MemberListAdapter (memberList, { position ->
+                        onListItemClick(position)
+                    },context = this@MemberListFragment )
+                    userRecyclerview.adapter = mRecyclerViewAdapter
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
                 }
             })
+    }
+
+    private fun onListItemClick(position: Int) {
+        Toast.makeText(context, "Item No. ${position + 1}", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {

@@ -14,7 +14,11 @@
         android:id="@+id/memberListFragment"
         android:name="com.ejqe.fan_club_app.fragment.MemberListFragment"
         android:label="MemberListFragment"
-        tools:layout="@layout/fragment_member_list"/>
+        tools:layout="@layout/fragment_member_list">
+        <action
+            android:id="@+id/action_memberListFragment_to_memberDetailsFragment"
+            app:destination="@id/memberDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/musicFragment"
         android:name="com.ejqe.fan_club_app.fragment.MusicFragment"
@@ -25,4 +29,11 @@
         android:name="com.ejqe.fan_club_app.fragment.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/memberDetailsFragment"
+        android:name="com.ejqe.fan_club_app.fragment.MemberDetailsFragment"
+        android:label="fragment_member_details"
+        tools:layout="@layout/fragment_member_details">
+    </fragment>
+
 </navigation>
