@@ -7,8 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionInflater
 import com.ejqe.fan_club_app.adapter.MemberListAdapter
 import com.ejqe.fan_club_app.databinding.FragmentMemberListBinding
 import com.ejqe.fan_club_app.model.MembersModel
@@ -40,16 +44,12 @@ class MemberListFragment : Fragment() {
         toolbar.title = "MEMBERS"
         (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
 
-        //Recycler View
-        userRecyclerview = binding.rvMemberList
-        val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(requireContext(), 3)
-        binding.rvMemberList.layoutManager = layoutManager
-        binding.rvMemberList.setHasFixedSize(true)
-        memberList = arrayListOf()
+        sharedElementReturnTransition =
+            TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
 
-        //Firebase
         getUserData()
-        //Refresh Down
+        setupRecyclerView()
+
         refreshList()
 
         return view
@@ -62,6 +62,16 @@ class MemberListFragment : Fragment() {
             getUserData()
             binding.swipeToRefresh.isRefreshing = false
         }
+    }
+
+
+    private fun setupRecyclerView() {
+
+        userRecyclerview = binding.rvMemberList
+        val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(requireContext(), 3)
+        binding.rvMemberList.layoutManager = layoutManager
+        binding.rvMemberList.setHasFixedSize(true)
+        memberList = arrayListOf()
     }
 
     //Get Firebase Data
@@ -77,9 +87,20 @@ class MemberListFragment : Fragment() {
                         val member = userSnapshot.getValue(MembersModel::class.java)
                         memberList.add(member!!)
                     }
-                    mRecyclerViewAdapter = MemberListAdapter (memberList, { position ->
-                        onListItemClick(position)
-                    },context = this@MemberListFragment )
+
+                    val membersModelListener = MemberListAdapter.OnClickClass { membersModel, imageView ->
+
+                            val directions: NavDirections = MemberListFragmentDirections
+                                    .actionMemberListFragmentToMemberDetailsFragment(membersModel)
+                            val extras = FragmentNavigatorExtras(
+                                imageView to membersModel.imageUrl!!
+                            )
+                            findNavController().navigate(directions, extras)
+                        }
+
+
+                    mRecyclerViewAdapter =
+                        MemberListAdapter(this@MemberListFragment, memberList, membersModelListener)
                     userRecyclerview.adapter = mRecyclerViewAdapter
                 }
 
@@ -89,9 +110,6 @@ class MemberListFragment : Fragment() {
             })
     }
 
-    private fun onListItemClick(position: Int) {
-        Toast.makeText(context, "Item No. ${position + 1}", Toast.LENGTH_SHORT).show()
-    }
 
     override fun onDestroy() {
         super.onDestroy()

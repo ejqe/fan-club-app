@@ -1,5 +1,11 @@
 package com.ejqe.fan_club_app.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+
+@Parcelize
+
 data class MembersModel(
     val _name: String?= null,
     var age: String?= null,
@@ -11,4 +17,4 @@ data class MembersModel(
     val height: String?= null,
     val imageUrl: String?= null
 
-)
+) : Parcelable

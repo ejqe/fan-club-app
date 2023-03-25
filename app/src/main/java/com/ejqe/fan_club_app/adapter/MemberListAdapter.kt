@@ -1,10 +1,9 @@
 package com.ejqe.fan_club_app.adapter
 
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ejqe.fan_club_app.databinding.SingleMemberBinding
@@ -13,28 +12,23 @@ import com.ejqe.fan_club_app.model.MembersModel
 
 
 class MemberListAdapter(
+    private val context: MemberListFragment,
     private val memberList: ArrayList<MembersModel>,
-    private val onItemClicked: (position: Int) -> Unit,
-    private val context: MemberListFragment
+    private val onClickListener: OnClickClass
 ) :
     RecyclerView.Adapter<MemberListAdapter.MLViewHolder>() {
 
     class MLViewHolder(
-        val itemBinding: SingleMemberBinding,
-        private val onItemClicked: (position: Int) -> Unit
+        val itemBinding: SingleMemberBinding
     ) :
-        RecyclerView.ViewHolder(itemBinding.root),
-        View.OnClickListener {
-
-        init {
-            itemBinding.memberImage.setOnClickListener(this)
+        RecyclerView.ViewHolder(itemBinding.root){
+            private val icon: ImageView = itemBinding.memberImage
+            fun bind(member: MembersModel, onClickListener: OnClickClass) {
+                itemBinding.root.setOnClickListener{
+                    onClickListener.onClick(member, icon)
+                }
+            }
         }
-
-        override fun onClick(p0: View) {
-            val position = absoluteAdapterPosition
-            onItemClicked(position)
-        }
-    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MLViewHolder {
@@ -43,22 +37,28 @@ class MemberListAdapter(
             parent, false
         )
 
-        return MLViewHolder(itemBinding, onItemClicked)
+        return MLViewHolder(itemBinding)
     }
 
-    @SuppressLint("SetTextI18n")
+    override fun getItemCount() = memberList.size
+
     override fun onBindViewHolder(holder: MLViewHolder, position: Int) {
 
         val currentItem = memberList[position]
         Glide.with(context).load(currentItem.imageUrl)
             .into(holder.itemBinding.memberImage)
+        holder.itemBinding.apply {
+            memberName.text = currentItem._name?.uppercase()
+            memberImage.transitionName = currentItem._name
+            }
+        holder.bind(currentItem, onClickListener)
+        }
 
-        holder.itemBinding.memberName.text = "MNL48 " + currentItem._name?.uppercase()
 
 
+    class OnClickClass( val clickListener: (MembersModel, ImageView) -> Unit) {
+        fun onClick(member: MembersModel, icon: ImageView) = clickListener(member, icon)
     }
-
-    override fun getItemCount(): Int = memberList.size
 
 }
 

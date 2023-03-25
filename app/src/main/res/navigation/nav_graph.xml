@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/memberListFragment">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -34,6 +34,9 @@
         android:name="com.ejqe.fan_club_app.fragment.MemberDetailsFragment"
         android:label="fragment_member_details"
         tools:layout="@layout/fragment_member_details">
+        <argument
+            android:name="membersModel"
+            app:argType="com.ejqe.fan_club_app.model.MembersModel"/>
     </fragment>
 
 </navigation>
