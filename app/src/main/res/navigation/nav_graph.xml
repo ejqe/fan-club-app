@@ -35,7 +35,7 @@
         android:label="fragment_member_details"
         tools:layout="@layout/fragment_member_details">
         <argument
-            android:name="membersModel"
+            android:name="membersModelArgs"
             app:argType="com.ejqe.fan_club_app.model.MembersModel"/>
     </fragment>
 

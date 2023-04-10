@@ -7,13 +7,5 @@
     tools:context=".fragment.HomeFragment"
     android:background="@color/home">
 
-   <androidx.appcompat.widget.Toolbar
-       android:id="@+id/toolbar"
-       android:layout_width="match_parent"
-       android:layout_height="?attr/actionBarSize"
-       app:titleTextColor="@color/design_default_color_on_primary"
-       android:background="@color/members"/>
-
-
 
 </FrameLayout>

@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 
 data class MembersModel(
-    val _name: String?= null,
+    var _name: String?= null,
     var age: String?= null,
     val birthdate: String?= null,
     val birthplace: String?= null,

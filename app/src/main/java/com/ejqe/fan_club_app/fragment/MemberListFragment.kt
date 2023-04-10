@@ -1,23 +1,21 @@
 package com.ejqe.fan_club_app.fragment
 
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavDirections
-import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.TransitionInflater
+import com.ejqe.fan_club_app.activity.MainActivity
 import com.ejqe.fan_club_app.activity.MemberOnClick
 import com.ejqe.fan_club_app.adapter.MemberListAdapter
 import com.ejqe.fan_club_app.databinding.FragmentMemberListBinding
 import com.ejqe.fan_club_app.model.MembersModel
-
 import com.google.firebase.database.*
 
 class MemberListFragment : Fragment(), MemberOnClick {
@@ -29,7 +27,6 @@ class MemberListFragment : Fragment(), MemberOnClick {
     private lateinit var memberList: ArrayList<MembersModel>
 
     private lateinit var userRecyclerview: RecyclerView
-    private lateinit var mRecyclerViewAdapter: MemberListAdapter
 
 
     override fun onCreateView(
@@ -40,17 +37,13 @@ class MemberListFragment : Fragment(), MemberOnClick {
         _binding = FragmentMemberListBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        //Setting the Toolbar
-        val toolbar = binding.toolbar
-        toolbar.title = "MEMBERS"
-        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
-
-        getUserData()
         setupRecyclerView()
+        getUserData()
+        refreshList()
+
 
         return view
     }
-
 
 
     private fun setupRecyclerView() {
@@ -76,7 +69,8 @@ class MemberListFragment : Fragment(), MemberOnClick {
                         memberList.add(member!!)
                     }
                     //setAdapter
-                    userRecyclerview.adapter = MemberListAdapter(memberList, this@MemberListFragment)
+                    userRecyclerview.adapter =
+                        MemberListAdapter(memberList, this@MemberListFragment)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -85,6 +79,17 @@ class MemberListFragment : Fragment(), MemberOnClick {
             })
     }
 
+    private fun refreshList() {
+        binding.swipeToRefresh.setOnRefreshListener {
+            getUserData()
+            binding.swipeToRefresh.isRefreshing = false
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as MainActivity).setToolBarTitle("MEMBERS")
+    }
 
     override fun onDestroy() {
 
@@ -93,6 +98,10 @@ class MemberListFragment : Fragment(), MemberOnClick {
     }
 
     override fun onSelect(member: MembersModel) {
-        Toast.makeText(requireContext(), "${member._name} Clicked", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(requireContext(), "${member._name} Clicked", Toast.LENGTH_SHORT).show(
+
+
+val action = MemberListFragmentDirections.actionMemberListFragmentToMemberDetailsFragment(member)
+        findNavController().navigate(action)
     }
 }

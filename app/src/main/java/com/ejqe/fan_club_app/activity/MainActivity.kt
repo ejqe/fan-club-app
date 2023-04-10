@@ -20,18 +20,21 @@ import com.ejqe.fan_club_app.fragment.ProfileFragment
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val actionBar = supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(false)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        navController = this.findNavController(R.id.fragment_container)
-//        NavigationUI.setupActionBarWithNavController(this, navController)
+        //Setting the Toolbar
+        setSupportActionBar(binding.toolbar)
+
 
         //Set default fragment
-//        binding.bottomNav.setItemSelected(R.id.homeFragment)
+        binding.bottomNav.setItemSelected(R.id.memberListFragment)
 
         //Assign Listener on Bottom Nav
         binding.bottomNav.setOnItemSelectedListener {
@@ -54,6 +57,10 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val navController = findNavController(R.id.fragment_container)
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+    }
+
+    fun setToolBarTitle(title: String) {
+        supportActionBar?.title = title
     }
     private fun loadFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()

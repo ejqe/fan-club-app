@@ -1,11 +1,13 @@
 package com.ejqe.fan_club_app.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.ejqe.fan_club_app.activity.MainActivity
 import com.ejqe.fan_club_app.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -19,12 +21,12 @@ class ProfileFragment : Fragment() {
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-        //Setting the Toolbar
-        val toolbar = binding.toolbar
-        toolbar.title = "PROFILE"
-        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
-
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as MainActivity).setToolBarTitle("PROFILE")
     }
 
     override fun onDestroy() {
