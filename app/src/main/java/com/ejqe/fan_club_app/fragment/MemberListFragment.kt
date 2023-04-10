@@ -13,13 +13,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionInflater
+import com.ejqe.fan_club_app.activity.MemberOnClick
 import com.ejqe.fan_club_app.adapter.MemberListAdapter
 import com.ejqe.fan_club_app.databinding.FragmentMemberListBinding
 import com.ejqe.fan_club_app.model.MembersModel
 
 import com.google.firebase.database.*
 
-class MemberListFragment : Fragment() {
+class MemberListFragment : Fragment(), MemberOnClick {
 
     private var _binding: FragmentMemberListBinding? = null
     private val binding get() = _binding!!
@@ -44,25 +45,12 @@ class MemberListFragment : Fragment() {
         toolbar.title = "MEMBERS"
         (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
 
-        sharedElementReturnTransition =
-            TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
-
         getUserData()
         setupRecyclerView()
-
-        refreshList()
 
         return view
     }
 
-
-    private fun refreshList() {
-        binding.swipeToRefresh.setOnRefreshListener {
-            memberList.clear()
-            getUserData()
-            binding.swipeToRefresh.isRefreshing = false
-        }
-    }
 
 
     private fun setupRecyclerView() {
@@ -87,21 +75,8 @@ class MemberListFragment : Fragment() {
                         val member = userSnapshot.getValue(MembersModel::class.java)
                         memberList.add(member!!)
                     }
-
-                    val membersModelListener = MemberListAdapter.OnClickClass { membersModel, imageView ->
-
-                            val directions: NavDirections = MemberListFragmentDirections
-                                    .actionMemberListFragmentToMemberDetailsFragment(membersModel)
-                            val extras = FragmentNavigatorExtras(
-                                imageView to membersModel.imageUrl!!
-                            )
-                            findNavController().navigate(directions, extras)
-                        }
-
-
-                    mRecyclerViewAdapter =
-                        MemberListAdapter(this@MemberListFragment, memberList, membersModelListener)
-                    userRecyclerview.adapter = mRecyclerViewAdapter
+                    //setAdapter
+                    userRecyclerview.adapter = MemberListAdapter(memberList, this@MemberListFragment)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -112,7 +87,12 @@ class MemberListFragment : Fragment() {
 
 
     override fun onDestroy() {
+
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onSelect(member: MembersModel) {
+        Toast.makeText(requireContext(), "${member._name} Clicked", Toast.LENGTH_SHORT).show()
     }
 }

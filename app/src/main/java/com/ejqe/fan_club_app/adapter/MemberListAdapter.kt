@@ -2,32 +2,35 @@ package com.ejqe.fan_club_app.adapter
 
 
 import android.view.LayoutInflater
+import android.view.ScrollCaptureCallback
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.ejqe.fan_club_app.activity.MemberOnClick
 import com.ejqe.fan_club_app.databinding.SingleMemberBinding
 import com.ejqe.fan_club_app.fragment.MemberListFragment
 import com.ejqe.fan_club_app.model.MembersModel
 
 
 class MemberListAdapter(
-    private val context: MemberListFragment,
     private val memberList: ArrayList<MembersModel>,
-    private val onClickListener: OnClickClass
+    private val callback: MemberOnClick
 ) :
     RecyclerView.Adapter<MemberListAdapter.MLViewHolder>() {
 
     class MLViewHolder(
-        val itemBinding: SingleMemberBinding
+        private val itemBinding: SingleMemberBinding
     ) :
         RecyclerView.ViewHolder(itemBinding.root){
-            private val icon: ImageView = itemBinding.memberImage
-            fun bind(member: MembersModel, onClickListener: OnClickClass) {
+            fun setData(data: MembersModel, callback: MemberOnClick){
+                itemBinding.memberName.text = data._name?.uppercase()
+                Glide.with(itemView.context).load(data.imageUrl).into(itemBinding.memberImage)
                 itemBinding.root.setOnClickListener{
-                    onClickListener.onClick(member, icon)
+                    callback.onSelect(data)
                 }
             }
+
         }
 
 
@@ -44,21 +47,12 @@ class MemberListAdapter(
 
     override fun onBindViewHolder(holder: MLViewHolder, position: Int) {
 
-        val currentItem = memberList[position]
-        Glide.with(context).load(currentItem.imageUrl)
-            .into(holder.itemBinding.memberImage)
-        holder.itemBinding.apply {
-            memberName.text = currentItem._name?.uppercase()
-            memberImage.transitionName = currentItem._name
-            }
-        holder.bind(currentItem, onClickListener)
-        }
-
-
-
-    class OnClickClass( val clickListener: (MembersModel, ImageView) -> Unit) {
-        fun onClick(member: MembersModel, icon: ImageView) = clickListener(member, icon)
+        holder.setData(memberList[position], callback)
     }
+
+
+
+
 
 }
 
